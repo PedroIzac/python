@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Alunos — CRUD Flask + SQLAlchemy</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <h1>Cadastro de Alunos</h1>
+    <p class="subtitulo">AulaSQLalchemy — Flask + SQLAlchemy (sem MVC)</p>
+
+    <p>
+        <a class="btn" href="{{ url_for('cadastrar') }}">+ Novo aluno</a>
+    </p>
+    
+    <h2>Total de Alunos Cadastrados: {{ alunos|length }}</h2>
+    
+    {% if alunos %}
+    <table>
+        <thead>
+            <tr>
+                <th>Nº</th> <!-- Alterado de ID para Nº da linha -->
+                <th>Id do Banco</th>
+                <th>Nome</th>
+                <th>E-mail</th>
+                <th>Telefone</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for aluno in alunos %}
+            <tr>
+                <!-- O loop.index conta automaticamente 1, 2, 3... a cada volta do for -->
+                <td><strong>{{ loop.index }}</strong></td>
+                <td>{{ aluno.id }}</td>
+                <td>{{ aluno.nome }}</td>
+                <td>{{ aluno.email }}</td>
+                <td>{{ aluno.telefone }}</td>
+
+                <td class="acoes">
+                    <a href="{{ url_for('editar', aluno_id=aluno.id) }}">Editar</a>
+                    <form method="POST" action="{{ url_for('excluir', aluno_id=aluno.id) }}"
+                          onsubmit="return confirm('Excluir {{ aluno.nome }}?');">
+                        <button type="submit" class="btn-danger">Excluir</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p class="vazio">Nenhum aluno cadastrado. Clique em <strong>Novo aluno</strong>.</p>
+    {% endif %}
+
+</body>
+</html>
